@@ -233,6 +233,16 @@ template $NautilusCommandBar: Adw.Bin {
       hexpand: true;
     }
 
+    ToggleButton star_button {
+      icon-name: "non-starred-symbolic";
+      tooltip-text: _("Star");
+      action-name: "command-bar.starred";
+
+      styles [
+        "flat",
+      ]
+    }
+
     ToggleButton bookmark_button {
       icon-name: "user-bookmarks-symbolic";
       tooltip-text: _("Add to Bookmarks");
