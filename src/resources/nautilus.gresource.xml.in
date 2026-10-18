@@ -38,6 +38,7 @@
     <file>ui/nautilus-rename-file-popover.ui</file>
     <file>ui/nautilus-search-types-dialog.ui</file>
     <file>ui/nautilus-sidebar-row.ui</file>
+    <file>ui/nautilus-command-bar.ui</file>
     <file>ui/nautilus-toolbar.ui</file>
     <file>ui/nautilus-view-controls.ui</file>
     <file>ui/nautilus-window.ui</file>

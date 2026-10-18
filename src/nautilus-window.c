@@ -28,6 +28,7 @@
 #endif
 
 #include "nautilus-application.h"
+#include "nautilus-command-bar.h"
 #include "nautilus-dnd.h"
 #include "nautilus-enums.h"
 #include "nautilus-file.h"
@@ -87,6 +88,7 @@ struct _NautilusWindow
 
     /* Toolbar */
     GtkWidget *toolbar;
+    GtkWidget *command_bar;
     gboolean temporary_navigation_bar;
 
     GtkWidget *network_address_bar;
@@ -1533,12 +1535,17 @@ nautilus_window_init (NautilusWindow *window)
     GtkEventController *controller;
     GtkPadController *pad_controller;
 
+    g_type_ensure (NAUTILUS_TYPE_COMMAND_BAR);
     g_type_ensure (NAUTILUS_TYPE_NETWORK_ADDRESS_BAR);
     g_type_ensure (NAUTILUS_TYPE_TOOLBAR);
     g_type_ensure (NAUTILUS_TYPE_PLACES_SIDEBAR);
     g_type_ensure (NAUTILUS_TYPE_PROGRESS_INDICATOR);
     g_type_ensure (NAUTILUS_TYPE_SHORTCUT_MANAGER);
     gtk_widget_init_template (GTK_WIDGET (window));
+
+    g_settings_bind (nautilus_preferences, NAUTILUS_PREFERENCES_SHOW_COMMAND_BAR,
+                     window->command_bar, "visible",
+                     G_SETTINGS_BIND_GET);
 
     g_signal_connect (window, "notify::maximized",
                       G_CALLBACK (on_is_maximized_changed), NULL);
@@ -1658,6 +1665,7 @@ nautilus_window_class_init (NautilusWindowClass *class)
                                                  "/org/gnome/nautilus/ui/nautilus-window.ui");
     gtk_widget_class_bind_template_child (wclass, NautilusWindow, undo_redo_section);
     gtk_widget_class_bind_template_child (wclass, NautilusWindow, toolbar);
+    gtk_widget_class_bind_template_child (wclass, NautilusWindow, command_bar);
     gtk_widget_class_bind_template_child (wclass, NautilusWindow, split_view);
     gtk_widget_class_bind_template_child (wclass, NautilusWindow, places_sidebar);
     gtk_widget_class_bind_template_child (wclass, NautilusWindow, toast_overlay);

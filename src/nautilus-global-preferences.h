@@ -105,6 +105,9 @@ typedef enum
 #define NAUTILUS_PREFERENCES_SHOW_DELETE_PERMANENTLY "show-delete-permanently"
 #define NAUTILUS_PREFERENCES_SHOW_CREATE_LINK "show-create-link"
 
+/* Command bar below the header bar */
+#define NAUTILUS_PREFERENCES_SHOW_COMMAND_BAR "show-command-bar"
+
 /* Full Text Search enabled */
 #define NAUTILUS_PREFERENCES_FTS_ENABLED "fts-enabled"
 

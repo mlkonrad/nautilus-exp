@@ -1,0 +1,283 @@
+using Gtk 4.0;
+using Adw 1;
+
+menu view_menu {
+  /* View mode section. Its contents is provided by the code, because the
+   * items need an uint32 target.
+   */
+  section view_mode_section {}
+
+  section {
+    label: _("Icon Size");
+    display-hint: "inline-buttons";
+
+    item {
+      custom: "zoom-out";
+    }
+
+    item {
+      custom: "zoom-in";
+    }
+  }
+
+  section {
+    item {
+      label: _("Show _Hidden Files");
+      action: "view.show-hidden-files";
+    }
+  }
+
+  section {
+    item {
+      label: _("_Visible Columns…");
+      action: "view.visible-columns";
+      hidden-when: "action-disabled";
+    }
+
+    item {
+      label: _("Captions…");
+      action: "view.visible-captions";
+      hidden-when: "action-disabled";
+    }
+  }
+}
+
+menu more_menu {
+  section {
+    item {
+      label: _("Select _All");
+      action: "view.select-all";
+      verb-icon: "edit-select-all-symbolic";
+    }
+
+    item {
+      label: _("_Invert Selection");
+      action: "view.invert-selection";
+    }
+  }
+
+  section {
+    item {
+      label: _("Open in Consol_e");
+      action: "view.current-directory-console";
+      hidden-when: "action-disabled";
+    }
+
+    item {
+      label: _("P_roperties");
+      action: "view.current-directory-properties";
+      hidden-when: "action-disabled";
+    }
+  }
+}
+
+template $NautilusCommandBar: Adw.Bin {
+  child: Box {
+    spacing: 4;
+
+    styles [
+      "toolbar",
+    ]
+
+    MenuButton new_button {
+      always-show-arrow: true;
+      tooltip-text: _("Create New Item");
+
+      child: Adw.ButtonContent {
+        can-shrink: true;
+        icon-name: "list-add-symbolic";
+        label: _("_New");
+        use-underline: true;
+      };
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Separator {
+      orientation: vertical;
+      margin-top: 6;
+      margin-bottom: 6;
+    }
+
+    Button {
+      icon-name: "edit-cut-symbolic";
+      tooltip-text: _("Cut");
+      action-name: "view.cut";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Button {
+      icon-name: "edit-copy-symbolic";
+      tooltip-text: _("Copy");
+      action-name: "view.copy";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Button {
+      icon-name: "edit-paste-symbolic";
+      tooltip-text: _("Paste");
+      action-name: "view.paste";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Button {
+      icon-name: "document-edit-symbolic";
+      tooltip-text: _("Rename");
+      action-name: "view.rename";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Button {
+      icon-name: "package-x-generic-symbolic";
+      tooltip-text: _("Compress");
+      action-name: "view.compress";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Button {
+      icon-name: "user-trash-symbolic";
+      tooltip-text: _("Move to Trash");
+      action-name: "view.move-to-trash";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Separator {
+      orientation: vertical;
+      margin-top: 6;
+      margin-bottom: 6;
+    }
+
+    MenuButton sort_button {
+      always-show-arrow: true;
+      tooltip-text: _("Sort Items");
+
+      child: Adw.ButtonContent {
+        can-shrink: true;
+        icon-name: "view-sort-descending-symbolic";
+        label: _("_Sort");
+        use-underline: true;
+      };
+
+      styles [
+        "flat",
+      ]
+    }
+
+    MenuButton view_button {
+      always-show-arrow: true;
+
+      /* Translators: This is a noun, meaning the options pertaining to the view. */
+      tooltip-text: _("View Options");
+
+      child: Adw.ButtonContent view_button_content {
+        can-shrink: true;
+        icon-name: "view-grid-symbolic";
+
+        /* Translators: This is a noun, meaning the options pertaining to the view. */
+        label: _("_View");
+        use-underline: true;
+      };
+
+      popover: PopoverMenu {
+        menu-model: view_menu;
+
+        [zoom-out]
+        Button {
+          icon-name: "zoom-out-symbolic";
+          action-name: "view.zoom-out";
+          tooltip-text: _("Zoom Out");
+
+          styles [
+            "flat",
+          ]
+        }
+
+        [zoom-in]
+        Button {
+          icon-name: "zoom-in-symbolic";
+          action-name: "view.zoom-in";
+          tooltip-text: _("Zoom In");
+
+          styles [
+            "flat",
+          ]
+        }
+      };
+
+      styles [
+        "flat",
+      ]
+    }
+
+    Box {
+      hexpand: true;
+    }
+
+    ToggleButton star_button {
+      icon-name: "non-starred-symbolic";
+      tooltip-text: _("Star");
+      action-name: "command-bar.starred";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    ToggleButton bookmark_button {
+      icon-name: "user-bookmarks-symbolic";
+      tooltip-text: _("Add to Bookmarks");
+      action-name: "command-bar.bookmarked";
+
+      styles [
+        "flat",
+      ]
+    }
+
+    ToggleButton {
+      tooltip-text: _("Search and Filter Current Folder");
+      action-name: "slot.search-visible";
+      active: bind template.window-slot as <$NautilusWindowSlot>.search-visible;
+
+      child: Adw.ButtonContent {
+        can-shrink: true;
+        icon-name: "funnel-outline-symbolic";
+        label: _("_Filter");
+        use-underline: true;
+      };
+
+      styles [
+        "flat",
+      ]
+    }
+
+    MenuButton {
+      icon-name: "view-more-symbolic";
+      tooltip-text: _("More Options");
+      menu-model: more_menu;
+
+      styles [
+        "flat",
+      ]
+    }
+  };
+}
