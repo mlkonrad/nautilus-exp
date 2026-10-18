@@ -57,6 +57,8 @@ libnautilus_sources = [
   'nautilus-column-chooser.h',
   'nautilus-column-utilities.c',
   'nautilus-column-utilities.h',
+  'nautilus-command-bar.c',
+  'nautilus-command-bar.h',
   'nautilus-compress-dialog.c',
   'nautilus-compress-dialog.h',
   'nautilus-date-entry-row.c',

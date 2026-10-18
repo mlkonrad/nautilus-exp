@@ -42,6 +42,8 @@
         "show_create_link_row"
 #define NAUTILUS_PREFERENCES_DIALOG_LIST_VIEW_USE_TREE_WIDGET                  \
         "use_tree_view_row"
+#define NAUTILUS_PREFERENCES_DIALOG_COMMAND_BAR_WIDGET                         \
+        "show_command_bar_row"
 
 /* combo preferences */
 #define NAUTILUS_PREFERENCES_DIALOG_OPEN_ACTION_COMBO                          \
@@ -178,6 +180,9 @@ nautilus_preferences_dialog_setup (GtkBuilder *builder)
     bind_builder_bool (builder, nautilus_list_view_preferences,
                        NAUTILUS_PREFERENCES_DIALOG_LIST_VIEW_USE_TREE_WIDGET,
                        NAUTILUS_PREFERENCES_LIST_VIEW_USE_TREE);
+    bind_builder_bool (builder, nautilus_preferences,
+                       NAUTILUS_PREFERENCES_DIALOG_COMMAND_BAR_WIDGET,
+                       NAUTILUS_PREFERENCES_SHOW_COMMAND_BAR);
     bind_builder_bool (builder, nautilus_preferences,
                        NAUTILUS_PREFERENCES_DIALOG_CREATE_LINK_WIDGET,
                        NAUTILUS_PREFERENCES_SHOW_CREATE_LINK);
