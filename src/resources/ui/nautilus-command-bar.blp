@@ -84,6 +84,7 @@ template $NautilusCommandBar: Adw.Bin {
       tooltip-text: _("Create New Item");
 
       child: Adw.ButtonContent {
+        can-shrink: true;
         icon-name: "list-add-symbolic";
         label: _("_New");
         use-underline: true;
@@ -171,6 +172,7 @@ template $NautilusCommandBar: Adw.Bin {
       tooltip-text: _("Sort Items");
 
       child: Adw.ButtonContent {
+        can-shrink: true;
         icon-name: "view-sort-descending-symbolic";
         label: _("_Sort");
         use-underline: true;
@@ -188,6 +190,7 @@ template $NautilusCommandBar: Adw.Bin {
       tooltip-text: _("View Options");
 
       child: Adw.ButtonContent view_button_content {
+        can-shrink: true;
         icon-name: "view-grid-symbolic";
 
         /* Translators: This is a noun, meaning the options pertaining to the view. */
@@ -236,6 +239,7 @@ template $NautilusCommandBar: Adw.Bin {
       active: bind template.window-slot as <$NautilusWindowSlot>.search-visible;
 
       child: Adw.ButtonContent {
+        can-shrink: true;
         icon-name: "funnel-outline-symbolic";
         label: _("_Filter");
         use-underline: true;
