@@ -8,8 +8,8 @@
  * command bar of other file managers. It doesn't implement any command itself:
  * every button activates an existing "view." or "slot." action, so their
  * sensitivity follows the selection and the clipboard like in the menus.
- * The only exception is the bookmark toggle, which acts on the selected
- * folder, if any, rather than only on the current folder.
+ * The only exceptions are the bookmark and star toggles, which act on the
+ * selection, if any, and on the current folder otherwise.
  */
 
 #include "nautilus-command-bar.h"
@@ -21,6 +21,7 @@
 #include "nautilus-file.h"
 #include "nautilus-file-utilities.h"
 #include "nautilus-scheme.h"
+#include "nautilus-tag-manager.h"
 #include "nautilus-ui-utilities.h"
 #include "nautilus-view-info.h"
 #include "nautilus-window-slot.h"
@@ -33,6 +34,7 @@ struct _NautilusCommandBar
     GtkWidget *sort_button;
     GtkWidget *view_button;
     GtkWidget *bookmark_button;
+    GtkWidget *star_button;
     AdwButtonContent *view_button_content;
     GMenu *view_mode_section;
 
@@ -130,9 +132,97 @@ action_bookmarked (GSimpleAction *action,
     }
 }
 
+/* Mirrors the rules used to enable the "view.star", "view.unstar",
+ * "slot.star-current-directory" and "slot.unstar-current-directory" actions,
+ * which do the actual work. */
+static void
+update_star_action (NautilusCommandBar *self)
+{
+    NautilusTagManager *tag_manager = nautilus_tag_manager_get ();
+    GFile *location = NULL;
+    GList *selection = NULL;
+    gboolean can_star = FALSE;
+    gboolean starred = FALSE;
+
+    if (self->window_slot != NULL)
+    {
+        location = nautilus_window_slot_get_location (self->window_slot);
+        selection = nautilus_window_slot_get_selection (self->window_slot);
+    }
+
+    if (location != NULL && selection == NULL)
+    {
+        g_autofree char *uri = g_file_get_uri (location);
+
+        can_star = nautilus_tag_manager_can_star_location (tag_manager, location);
+        starred = nautilus_tag_manager_file_is_starred (tag_manager, uri);
+    }
+    else if (location != NULL)
+    {
+        gboolean any_starred = FALSE;
+        gboolean all_starred = TRUE;
+
+        for (GList *l = selection; l != NULL; l = l->next)
+        {
+            g_autofree char *uri = nautilus_file_get_activation_uri (l->data);
+
+            if (nautilus_tag_manager_file_is_starred (tag_manager, uri))
+            {
+                any_starred = TRUE;
+            }
+            else
+            {
+                all_starred = FALSE;
+            }
+        }
+
+        /* A selection mixing starred and non-starred items can't be toggled. */
+        can_star = (nautilus_tag_manager_can_star_contents (tag_manager, location) || any_starred) &&
+                   (all_starred || !any_starred);
+        starred = all_starred;
+    }
+
+    GAction *action = g_action_map_lookup_action (G_ACTION_MAP (self->action_group), "starred");
+    g_simple_action_set_enabled (G_SIMPLE_ACTION (action), can_star);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (can_star && starred));
+
+    gtk_button_set_icon_name (GTK_BUTTON (self->star_button),
+                              can_star && starred ? "starred-symbolic" : "non-starred-symbolic");
+    gtk_widget_set_tooltip_text (self->star_button,
+                                 can_star && starred ? _("Unstar") : _("Star"));
+}
+
+static void
+action_starred (GSimpleAction *action,
+                GVariant      *state,
+                gpointer       user_data)
+{
+    NautilusCommandBar *self = NAUTILUS_COMMAND_BAR (user_data);
+    gboolean star = g_variant_get_boolean (state);
+
+    if (self->window_slot == NULL)
+    {
+        return;
+    }
+
+    /* The state is updated by update_star_action() once the tag manager
+     * reports the change. */
+    if (nautilus_window_slot_get_selection (self->window_slot) == NULL)
+    {
+        gtk_widget_activate_action (GTK_WIDGET (self),
+                                    star ? "slot.star-current-directory" : "slot.unstar-current-directory",
+                                    NULL);
+    }
+    else
+    {
+        gtk_widget_activate_action (GTK_WIDGET (self), star ? "view.star" : "view.unstar", NULL);
+    }
+}
+
 static const GActionEntry command_bar_entries[] =
 {
     { .name = "bookmarked", .state = "false", .change_state = action_bookmarked },
+    { .name = "starred", .state = "false", .change_state = action_starred },
 };
 
 static void
@@ -194,6 +284,7 @@ adjust_to_location (NautilusCommandBar *self)
                                 !nautilus_is_root_for_scheme (location, SCHEME_NETWORK_VIEW);
 
     update_bookmark_actions (self);
+    update_star_action (self);
 
     gtk_widget_set_sensitive (self->sort_button, has_view_options);
     gtk_widget_set_sensitive (self->view_button, has_view_options);
@@ -246,6 +337,8 @@ nautilus_command_bar_set_window_slot (NautilusCommandBar *self,
                                   G_CALLBACK (update_view_button_icon), self);
         g_signal_connect_swapped (self->window_slot, "notify::selection",
                                   G_CALLBACK (update_bookmark_actions), self);
+        g_signal_connect_swapped (self->window_slot, "notify::selection",
+                                  G_CALLBACK (update_star_action), self);
     }
 
     adjust_to_location (self);
@@ -348,6 +441,7 @@ nautilus_command_bar_class_init (NautilusCommandBarClass *klass)
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, sort_button);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, view_button);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, bookmark_button);
+    gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, star_button);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, view_button_content);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, view_mode_section);
 }
@@ -370,6 +464,9 @@ nautilus_command_bar_init (NautilusCommandBar *self)
     g_signal_connect_object (nautilus_application_get_bookmarks (app), "changed",
                              G_CALLBACK (update_bookmark_actions), self,
                              G_CONNECT_SWAPPED);
+    g_signal_connect_object (nautilus_tag_manager_get (), "starred-changed",
+                             G_CALLBACK (update_star_action), self,
+                             G_CONNECT_SWAPPED);
 
     g_autoptr (GtkBuilder) builder =
         gtk_builder_new_from_resource ("/org/gnome/nautilus/menu/nautilus-toolbar-view-menu.ui");
@@ -389,4 +486,5 @@ nautilus_command_bar_init (NautilusCommandBar *self)
 
     update_new_menu (self);
     update_bookmark_actions (self);
+    update_star_action (self);
 }
