@@ -4,6 +4,7 @@ blueprint_names = [
   'nautilus-app-chooser-widget',
   'nautilus-batch-rename-dialog',
   'nautilus-column-chooser',
+  'nautilus-command-bar',
   'nautilus-compress-dialog',
   'nautilus-date-entry-row',
   'nautilus-date-range-dialog',

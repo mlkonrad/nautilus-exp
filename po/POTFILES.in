@@ -20,6 +20,7 @@ src/nautilus-bookmark.c
 src/nautilus-clipboard.c
 src/nautilus-column-chooser.c
 src/nautilus-column-utilities.c
+src/nautilus-command-bar.c
 src/nautilus-compress-dialog.c
 src/nautilus-date-utilities.c
 src/nautilus-dbus-launcher.c
@@ -83,6 +84,7 @@ src/resources/ui/nautilus-app-chooser.blp
 src/resources/ui/nautilus-app-chooser-widget.blp
 src/resources/ui/nautilus-batch-rename-dialog.blp
 src/resources/ui/nautilus-column-chooser.blp
+src/resources/ui/nautilus-command-bar.blp
 src/resources/ui/nautilus-compress-dialog.blp
 src/resources/ui/nautilus-date-entry-row.blp
 src/resources/ui/nautilus-date-range-dialog.blp

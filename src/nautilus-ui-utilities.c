@@ -12,6 +12,7 @@
 
 #include "nautilus-ui-utilities.h"
 #include "nautilus-application.h"
+#include "nautilus-file.h"
 
 #include <gio/gio.h>
 #include <gtk/gtk.h>
@@ -246,6 +247,36 @@ nautilus_menu_item_change_attribute (GMenuModel  *menu_model,
 
     g_menu_remove (G_MENU (menu_model), i);
     g_menu_insert_item (G_MENU (menu_model), i, item);
+}
+
+/* Shows the sort criteria which only make sense in some special locations
+ * (Trash, Recent and Search) and hides them elsewhere.
+ * See menu/nautilus-toolbar-view-menu.ui for the sort section model.
+ */
+void
+nautilus_sort_section_update_for_file (GMenuModel   *sort_section,
+                                       NautilusFile *file)
+{
+    const char *action;
+
+    /* When not in the special location, set an inexistant action to hide the
+     * menu item. This works under the assumptiont that the menu item has its
+     * "hidden-when" attribute set to "action-disabled", and that an inexistant
+     * action is treated as a disabled action. */
+    action = nautilus_file_is_in_trash (file) ? "view.sort" : "doesnt-exist";
+    nautilus_menu_item_change_attribute (sort_section,
+                                         "last_trashed",
+                                         G_MENU_ATTRIBUTE_ACTION, action);
+
+    action = nautilus_file_is_in_recent (file) ? "view.sort" : "doesnt-exist";
+    nautilus_menu_item_change_attribute (sort_section,
+                                         "recency",
+                                         G_MENU_ATTRIBUTE_ACTION, action);
+
+    action = nautilus_file_is_in_search (file) ? "view.sort" : "doesnt-exist";
+    nautilus_menu_item_change_attribute (sort_section,
+                                         "relevance",
+                                         G_MENU_ATTRIBUTE_ACTION, action);
 }
 
 static GdkTexture *filmholes_left = NULL;

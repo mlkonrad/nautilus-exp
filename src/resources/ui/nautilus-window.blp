@@ -193,6 +193,13 @@ template $NautilusWindow: Adw.ApplicationWindow {
             }
 
             [top]
+            Adw.Bin command_bar_container {
+              child: $NautilusCommandBar command_bar {
+                window-slot: bind template.active-slot;
+              };
+            }
+
+            [top]
             Adw.TabBar tab_bar {
               view: tab_view;
             }
@@ -252,6 +259,7 @@ template $NautilusWindow: Adw.ApplicationWindow {
       action_bar.revealed: true;
       progress_indicator.popover-position: 2;
       tab_bar.visible: false;
+      command_bar_container.visible: false;
     }
   }
 }

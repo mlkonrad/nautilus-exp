@@ -39,32 +39,6 @@ enum
 static GParamSpec *properties[N_PROPS];
 
 static void
-update_sort_section (NautilusViewControls *self,
-                     NautilusFile         *file)
-{
-    const char *action;
-
-    /* When not in the special location, set an inexistant action to hide the
-     * menu item. This works under the assumptiont that the menu item has its
-     * "hidden-when" attribute set to "action-disabled", and that an inexistant
-     * action is treated as a disabled action. */
-    action = nautilus_file_is_in_trash (file) ? "view.sort" : "doesnt-exist";
-    nautilus_menu_item_change_attribute (self->sort_section,
-                                         "last_trashed",
-                                         G_MENU_ATTRIBUTE_ACTION, action);
-
-    action = nautilus_file_is_in_recent (file) ? "view.sort" : "doesnt-exist";
-    nautilus_menu_item_change_attribute (self->sort_section,
-                                         "recency",
-                                         G_MENU_ATTRIBUTE_ACTION, action);
-
-    action = nautilus_file_is_in_search (file) ? "view.sort" : "doesnt-exist";
-    nautilus_menu_item_change_attribute (self->sort_section,
-                                         "relevance",
-                                         G_MENU_ATTRIBUTE_ACTION, action);
-}
-
-static void
 adjust_to_location (NautilusViewControls *self,
                     GParamSpec           *param,
                     NautilusWindowSlot   *slot)
@@ -82,7 +56,7 @@ adjust_to_location (NautilusViewControls *self,
 
     g_autoptr (NautilusFile) file = nautilus_file_get (location);
 
-    update_sort_section (self, file);
+    nautilus_sort_section_update_for_file (self->sort_section, file);
 }
 
 static void

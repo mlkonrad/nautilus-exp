@@ -12,6 +12,7 @@
 #include <gtk/gtk.h>
 
 #include "nautilus-enums.h"
+#include "nautilus-types.h"
 
 
 /**
@@ -36,6 +37,9 @@ void        nautilus_menu_item_change_attribute     (GMenuModel        *menu_mod
                                                      const gchar       *item_name,
                                                      const gchar       *attribute,
                                                      const gchar       *new_value);
+
+void        nautilus_sort_section_update_for_file   (GMenuModel        *sort_section,
+                                                     NautilusFile      *file);
 
 void        nautilus_ui_frame_video                 (GtkSnapshot       *snapshot,
                                                      gdouble            width,
