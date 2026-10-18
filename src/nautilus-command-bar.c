@@ -19,10 +19,8 @@
 #include "nautilus-application.h"
 #include "nautilus-bookmark-list.h"
 #include "nautilus-file.h"
-#include "nautilus-file-utilities.h"
-#include "nautilus-scheme.h"
 #include "nautilus-tag-manager.h"
-#include "nautilus-ui-utilities.h"
+#include "nautilus-toolbar-menu-sections.h"
 #include "nautilus-view-info.h"
 #include "nautilus-window-slot.h"
 
@@ -38,7 +36,6 @@ struct _NautilusCommandBar
     AdwButtonContent *view_button_content;
     GMenu *view_mode_section;
 
-    GMenuModel *sort_section;
     GSimpleActionGroup *action_group;
 
     NautilusWindowSlot *window_slot;
@@ -289,30 +286,26 @@ update_view_button_icon (NautilusCommandBar *self)
 static void
 adjust_to_location (NautilusCommandBar *self)
 {
-    GFile *location = NULL;
+    update_bookmark_actions (self);
+    update_star_action (self);
+}
+
+/* The sort section is provided by the view through the slot, like for
+ * NautilusViewControls. There is none when the view has no view options. */
+static void
+update_view_options (NautilusCommandBar *self)
+{
+    NautilusToolbarMenuSections *sections = NULL;
 
     if (self->window_slot != NULL)
     {
-        location = nautilus_window_slot_get_location (self->window_slot);
+        sections = nautilus_window_slot_get_toolbar_menu_sections (self->window_slot);
     }
 
-    gboolean has_view_options = location != NULL &&
-                                !nautilus_is_root_for_scheme (location, SCHEME_NETWORK_VIEW);
-
-    update_bookmark_actions (self);
-    update_star_action (self);
-
-    gtk_widget_set_sensitive (self->sort_button, has_view_options);
-    gtk_widget_set_sensitive (self->view_button, has_view_options);
-
-    if (!has_view_options)
-    {
-        return;
-    }
-
-    g_autoptr (NautilusFile) file = nautilus_file_get (location);
-
-    nautilus_sort_section_update_for_file (self->sort_section, file);
+    gtk_widget_set_sensitive (self->sort_button, sections != NULL);
+    gtk_widget_set_sensitive (self->view_button, sections != NULL);
+    gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->sort_button),
+                                    sections != NULL ? sections->sort_section : NULL);
 }
 
 static void
@@ -347,6 +340,8 @@ nautilus_command_bar_set_window_slot (NautilusCommandBar *self,
     {
         g_signal_connect_swapped (self->window_slot, "notify::location",
                                   G_CALLBACK (adjust_to_location), self);
+        g_signal_connect_swapped (self->window_slot, "notify::toolbar-menu-sections",
+                                  G_CALLBACK (update_view_options), self);
         g_signal_connect_swapped (self->window_slot, "notify::templates-menu",
                                   G_CALLBACK (update_new_menu), self);
         g_signal_connect_swapped (self->window_slot, "notify::icon-name",
@@ -358,6 +353,7 @@ nautilus_command_bar_set_window_slot (NautilusCommandBar *self,
     }
 
     adjust_to_location (self);
+    update_view_options (self);
     update_new_menu (self);
     update_view_button_icon (self);
 
@@ -427,7 +423,6 @@ nautilus_command_bar_finalize (GObject *obj)
 {
     NautilusCommandBar *self = NAUTILUS_COMMAND_BAR (obj);
 
-    g_clear_object (&self->sort_section);
     g_clear_object (&self->action_group);
 
     G_OBJECT_CLASS (nautilus_command_bar_parent_class)->finalize (obj);
@@ -483,12 +478,6 @@ nautilus_command_bar_init (NautilusCommandBar *self)
     g_signal_connect_object (nautilus_tag_manager_get (), "starred-changed",
                              G_CALLBACK (update_star_action), self,
                              G_CONNECT_SWAPPED);
-
-    g_autoptr (GtkBuilder) builder =
-        gtk_builder_new_from_resource ("/org/gnome/nautilus/menu/nautilus-toolbar-view-menu.ui");
-
-    self->sort_section = G_MENU_MODEL (g_object_ref (gtk_builder_get_object (builder, "sort_section")));
-    gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->sort_button), self->sort_section);
 
     g_autoptr (GMenuItem) grid_item = g_menu_item_new (_("_Grid"), NULL);
     g_autoptr (GMenuItem) list_item = g_menu_item_new (_("_List"), NULL);
