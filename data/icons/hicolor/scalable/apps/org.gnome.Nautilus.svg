@@ -1,252 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   viewBox="0 0 128 128"
-   style="display:inline;enable-background:new"
-   version="1.0"
-   id="svg11300"
-   height="128"
-   width="128">
-  <title
-     id="title4162">Adwaita Icon Template</title>
-  <defs
-     id="defs3">
-    <linearGradient
-       id="linearGradient1245">
-      <stop
-         id="stop1241"
-         offset="0"
-         style="stop-color:#9a9996;stop-opacity:1" />
-      <stop
-         id="stop1243"
-         offset="1"
-         style="stop-color:#c0bfbc;stop-opacity:1" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="20" y1="66" x2="108" y2="66" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#deddda"/>
+      <stop offset="0.0455" stop-color="#eeeeec"/>
+      <stop offset="0.0909" stop-color="#deddda"/>
+      <stop offset="0.9091" stop-color="#deddda"/>
+      <stop offset="0.9545" stop-color="#eeeeec"/>
+      <stop offset="1" stop-color="#c0bfbc"/>
     </linearGradient>
-    <linearGradient
-       id="linearGradient1697">
-      <stop
-         style="stop-color:#deddda;stop-opacity:1"
-         offset="0"
-         id="stop1685" />
-      <stop
-         id="stop1687"
-         offset="0.04545455"
-         style="stop-color:#eeeeec;stop-opacity:1" />
-      <stop
-         style="stop-color:#deddda;stop-opacity:1"
-         offset="0.09090909"
-         id="stop1689" />
-      <stop
-         id="stop1691"
-         offset="0.90909094"
-         style="stop-color:#deddda;stop-opacity:1" />
-      <stop
-         style="stop-color:#eeeeec;stop-opacity:1"
-         offset="0.95454544"
-         id="stop1693" />
-      <stop
-         style="stop-color:#c0bfbc;stop-opacity:1"
-         offset="1"
-         id="stop1695" />
+    <linearGradient id="linear-gradient-2" x1="64" y1="12" x2="64" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd75e"/>
+      <stop offset="1" stop-color="#ffc83d"/>
     </linearGradient>
-    <linearGradient
-       gradientUnits="userSpaceOnUse"
-       y2="238"
-       x2="108"
-       y1="238"
-       x1="20"
-       id="linearGradient1049"
-       xlink:href="#linearGradient1697" />
-    <linearGradient
-       y2="238"
-       x2="74"
-       y1="238"
-       x1="50"
-       gradientTransform="translate(2,-22)"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient1185"
-       xlink:href="#linearGradient1697" />
-    <linearGradient
-       y2="200"
-       x2="65"
-       y1="204"
-       x1="65"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient1348"
-       xlink:href="#linearGradient1245" />
+    <linearGradient id="linear-gradient-3" x1="64" y1="24" x2="64" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4cc2ff"/>
+      <stop offset="1" stop-color="#0078d4"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="64" y1="56" x2="64" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4cc2ff"/>
+      <stop offset="1" stop-color="#0078d4"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-5" x1="64" y1="88" x2="64" y2="94" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4cc2ff"/>
+      <stop offset="1" stop-color="#0078d4"/>
+    </linearGradient>
   </defs>
-  <metadata
-     id="metadata4">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:creator>
-          <cc:Agent>
-            <dc:title>GNOME Design Team</dc:title>
-          </cc:Agent>
-        </dc:creator>
-        <dc:source />
-        <cc:license
-           rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
-        <dc:title>Adwaita Icon Template</dc:title>
-        <dc:subject>
-          <rdf:Bag />
-        </dc:subject>
-        <dc:date />
-        <dc:rights>
-          <cc:Agent>
-            <dc:title />
-          </cc:Agent>
-        </dc:rights>
-        <dc:publisher>
-          <cc:Agent>
-            <dc:title />
-          </cc:Agent>
-        </dc:publisher>
-        <dc:identifier />
-        <dc:relation />
-        <dc:language />
-        <dc:coverage />
-        <dc:description />
-        <dc:contributor>
-          <cc:Agent>
-            <dc:title />
-          </cc:Agent>
-        </dc:contributor>
-      </cc:Work>
-      <cc:License
-         rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
-        <cc:permits
-           rdf:resource="http://creativecommons.org/ns#Reproduction" />
-        <cc:permits
-           rdf:resource="http://creativecommons.org/ns#Distribution" />
-        <cc:requires
-           rdf:resource="http://creativecommons.org/ns#Notice" />
-        <cc:requires
-           rdf:resource="http://creativecommons.org/ns#Attribution" />
-        <cc:permits
-           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
-        <cc:requires
-           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
-      </cc:License>
-    </rdf:RDF>
-  </metadata>
-  <g
-     transform="translate(0,-172)"
-     style="display:inline"
-     id="layer1">
-    <g
-       style="display:inline"
-       id="layer9">
-      <g
-         transform="matrix(0.25,0,0,-0.25,-6,217)"
-         id="g15447-1" />
-      <g
-         id="g1207">
-        <rect
-           ry="8.017911"
-           rx="8.7725897"
-           y="234"
-           x="20"
-           height="58"
-           width="88"
-           id="rect1041"
-           style="opacity:1;vector-effect:none;fill:url(#linearGradient1049);fill-opacity:1;stroke:none;stroke-width:0.01184966px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal" />
-        <rect
-           style="opacity:1;vector-effect:none;fill:#f6f5f4;fill-opacity:1;stroke:none;stroke-width:0.01184966px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
-           id="rect15435-6"
-           width="88"
-           height="108"
-           x="20"
-           y="180"
-           rx="8.7725897"
-           ry="8.017911" />
-        <rect
-           ry="4.0021734"
-           rx="4"
-           y="186"
-           x="24"
-           height="98"
-           width="80"
-           id="rect1167"
-           style="display:inline;opacity:1;vector-effect:none;fill:#1a5fb4;fill-opacity:1;stroke:none;stroke-width:0.0119126px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new" />
-        <rect
-           style="display:inline;opacity:1;vector-effect:none;fill:#3584e4;fill-opacity:1;stroke:none;stroke-width:0.0119126px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new"
-           id="rect15441-8"
-           width="80"
-           height="98"
-           x="24"
-           y="184"
-           rx="4"
-           ry="4.0021734" />
-        <rect
-           style="display:inline;opacity:1;vector-effect:none;fill:#1c71d8;fill-opacity:1;stroke:none;stroke-width:0.01190936px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new"
-           id="rect15443-6"
-           width="80"
-           height="2"
-           x="24"
-           y="216"
-           rx="0"
-           ry="0" />
-        <rect
-           style="display:inline;opacity:1;vector-effect:none;fill:#1c71d8;fill-opacity:1;stroke:none;stroke-width:0.01190936px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new"
-           id="rect15461-2"
-           width="80"
-           height="2"
-           x="24"
-           y="248"
-           rx="0"
-           ry="0" />
-        <g
-           id="g1088">
-          <path
-             id="path26035"
-             d="m 55,196 h 18 c 1.662,0 3,1 3,3 v 5 H 72.03125 L 72,200 H 56 l 0.03125,4 H 52 v -5 c 0,-1.662 1.338,-3 3,-3 z"
-             style="opacity:1;vector-effect:none;fill:url(#linearGradient1185);fill-opacity:1;stroke:none;stroke-width:0.01184966px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal" />
-          <rect
-             style="opacity:0.1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-             id="rect1059"
-             width="24"
-             height="4"
-             x="52"
-             y="202"
-             ry="1.5" />
-          <path
-             style="opacity:1;fill:url(#linearGradient1348);fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-             d="m 55,200 c -1.662,0 -3,1.338 -3,3 v 1 h 4 v -2 h 16 v 2 h 4 v -1 c 0,-1.662 -1.338,-3 -3,-3 z"
-             id="rect1061" />
-          <rect
-             y="202"
-             x="56"
-             height="2"
-             width="16"
-             id="rect1189"
-             style="opacity:0.1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <title>org.gnome.Nautilus.svg</title>
+  <g id="layer1">
+    <g id="layer9">
+      <g id="g1207">
+        <path id="rect1041" d="M28.773 62 L99.227 62 C101.554 62 103.785 62.845 105.431 64.348 C107.076 65.852 108 67.891 108 70.018 L108 111.982 C108 114.109 107.076 116.148 105.431 117.652 C103.785 119.155 101.554 120 99.227 120 L28.773 120 C26.446 120 24.215 119.155 22.569 117.652 C20.924 116.148 20 114.109 20 111.982 L20 70.018 C20 67.891 20.924 65.852 22.569 64.348 C24.215 62.845 26.446 62 28.773 62 Z" fill="url(#linear-gradient-1)"/>
+        <path id="rect15435-6" d="M28.773 8 L99.227 8 C101.554 8 103.785 8.845 105.431 10.348 C107.076 11.852 108 13.891 108 16.018 L108 107.982 C108 110.109 107.076 112.148 105.431 113.652 C103.785 115.155 101.554 116 99.227 116 L28.773 116 C26.446 116 24.215 115.155 22.569 113.652 C20.924 112.148 20 110.109 20 107.982 L20 16.018 C20 13.891 20.924 11.852 22.569 10.348 C24.215 8.845 26.446 8 28.773 8 Z" fill="#f6f5f4"/>
+        <path id="rect1167" d="M28 14 L100 14 C102.209 14 104 15.792 104 18.002 L104 107.998 C104 110.208 102.209 112 100 112 L28 112 C25.791 112 24 110.208 24 107.998 L24 18.002 C24 15.792 25.791 14 28 14 Z" fill="#d4900a"/>
+        <path id="rect15441-8" d="M28 12 L100 12 C102.209 12 104 13.792 104 16.002 L104 105.998 C104 108.208 102.209 110 100 110 L28 110 C25.791 110 24 108.208 24 105.998 L24 16.002 C24 13.792 25.791 12 28 12 Z" fill="url(#linear-gradient-2)"/>
+        <path id="rect15443-6" d="M24 44 L104 44 L104 46 L24 46 Z" fill="#e8a215"/>
+        <path id="rect15461-2" d="M24 76 L104 76 L104 78 L24 78 Z" fill="#e8a215"/>
+        <g id="g1088">
+          <path id="path26035" d="M55 24 L73 24 C74.662 24 76 25 76 27 L76 32 L72.031 32 L72 28 L56 28 L56.031 32 L52 32 L52 27 C52 25.338 53.338 24 55 24 Z" fill="url(#linear-gradient-3)"/>
+          <path id="rect1059" d="M53.5 30 L74.5 30 C75.328 30 76 30.672 76 31.5 L76 32.5 C76 33.328 75.328 34 74.5 34 L53.5 34 C52.672 34 52 33.328 52 32.5 L52 31.5 C52 30.672 52.672 30 53.5 30 Z" fill="#000000" opacity="0.1"/>
+          <path id="rect1061" d="M55 28 C53.338 28 52 29.338 52 31 L52 32 L56 32 L56 30 L72 30 L72 32 L76 32 L76 31 C76 29.338 74.662 28 73 28 Z" fill="#005a9e"/>
+          <path id="rect1189" d="M56 30 L72 30 L72 32 L56 32 Z" fill="#000000" opacity="0.1"/>
         </g>
-        <use
-           x="0"
-           y="0"
-           xlink:href="#g1088"
-           id="use1090"
-           transform="translate(0,32)"
-           width="100%"
-           height="100%" />
-        <use
-           height="100%"
-           width="100%"
-           transform="translate(0,64)"
-           id="use1092"
-           xlink:href="#g1088"
-           y="0"
-           x="0" />
+        <g id="use1090">
+          <g>
+            <path d="M55 56 L73 56 C74.662 56 76 57 76 59 L76 64 L72.031 64 L72 60 L56 60 L56.031 64 L52 64 L52 59 C52 57.338 53.338 56 55 56 Z" fill="url(#linear-gradient-4)"/>
+            <path d="M53.5 62 L74.5 62 C75.328 62 76 62.672 76 63.5 L76 64.5 C76 65.328 75.328 66 74.5 66 L53.5 66 C52.672 66 52 65.328 52 64.5 L52 63.5 C52 62.672 52.672 62 53.5 62 Z" fill="#000000" opacity="0.1"/>
+            <path d="M55 60 C53.338 60 52 61.338 52 63 L52 64 L56 64 L56 62 L72 62 L72 64 L76 64 L76 63 C76 61.338 74.662 60 73 60 Z" fill="#005a9e"/>
+            <path d="M56 62 L72 62 L72 64 L56 64 Z" fill="#000000" opacity="0.1"/>
+          </g>
+        </g>
+        <g id="use1092">
+          <g>
+            <path d="M55 88 L73 88 C74.662 88 76 89 76 91 L76 96 L72.031 96 L72 92 L56 92 L56.031 96 L52 96 L52 91 C52 89.338 53.338 88 55 88 Z" fill="url(#linear-gradient-5)"/>
+            <path d="M53.5 94 L74.5 94 C75.328 94 76 94.672 76 95.5 L76 96.5 C76 97.328 75.328 98 74.5 98 L53.5 98 C52.672 98 52 97.328 52 96.5 L52 95.5 C52 94.672 52.672 94 53.5 94 Z" fill="#000000" opacity="0.1"/>
+            <path d="M55 92 C53.338 92 52 93.338 52 95 L52 96 L56 96 L56 94 L72 94 L72 96 L76 96 L76 95 C76 93.338 74.662 92 73 92 Z" fill="#005a9e"/>
+            <path d="M56 94 L72 94 L72 96 L56 96 Z" fill="#000000" opacity="0.1"/>
+          </g>
+        </g>
       </g>
     </g>
   </g>
