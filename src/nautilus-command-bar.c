@@ -8,12 +8,16 @@
  * command bar of other file managers. It doesn't implement any command itself:
  * every button activates an existing "view." or "slot." action, so their
  * sensitivity follows the selection and the clipboard like in the menus.
+ * The only exception is the bookmark toggle, which acts on the selected
+ * folder, if any, rather than only on the current folder.
  */
 
 #include "nautilus-command-bar.h"
 
 #include <glib/gi18n.h>
 
+#include "nautilus-application.h"
+#include "nautilus-bookmark-list.h"
 #include "nautilus-file.h"
 #include "nautilus-file-utilities.h"
 #include "nautilus-scheme.h"
@@ -28,10 +32,12 @@ struct _NautilusCommandBar
     GtkWidget *new_button;
     GtkWidget *sort_button;
     GtkWidget *view_button;
+    GtkWidget *bookmark_button;
     AdwButtonContent *view_button_content;
     GMenu *view_mode_section;
 
     GMenuModel *sort_section;
+    GSimpleActionGroup *action_group;
 
     NautilusWindowSlot *window_slot;
 };
@@ -46,6 +52,88 @@ enum
 };
 
 static GParamSpec *properties[N_PROPS];
+
+/* Returns the folder the bookmark toggle acts on: the selected folder, or the
+ * current folder when nothing is selected. */
+static GFile *
+get_bookmark_target (NautilusCommandBar *self)
+{
+    if (self->window_slot == NULL)
+    {
+        return NULL;
+    }
+
+    GList *selection = nautilus_window_slot_get_selection (self->window_slot);
+
+    if (selection == NULL)
+    {
+        GFile *location = nautilus_window_slot_get_location (self->window_slot);
+
+        return location != NULL ? g_object_ref (location) : NULL;
+    }
+
+    if (selection->next == NULL && nautilus_file_is_directory (selection->data))
+    {
+        return nautilus_file_get_location (selection->data);
+    }
+
+    return NULL;
+}
+
+static void
+update_bookmark_actions (NautilusCommandBar *self)
+{
+    NautilusApplication *app = NAUTILUS_APPLICATION (g_application_get_default ());
+    NautilusBookmarkList *bookmarks = nautilus_application_get_bookmarks (app);
+    g_autoptr (GFile) target = get_bookmark_target (self);
+    gboolean can_bookmark = FALSE;
+    gboolean bookmarked = FALSE;
+
+    if (target != NULL)
+    {
+        can_bookmark = nautilus_bookmark_list_can_bookmark (bookmarks, target);
+        bookmarked = nautilus_bookmark_list_contains (bookmarks, target);
+    }
+
+    GAction *action = g_action_map_lookup_action (G_ACTION_MAP (self->action_group), "bookmarked");
+    g_simple_action_set_enabled (G_SIMPLE_ACTION (action), can_bookmark || bookmarked);
+    g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (bookmarked));
+
+    gtk_widget_set_tooltip_text (self->bookmark_button,
+                                 bookmarked ? _("Remove from Bookmarks") : _("Add to Bookmarks"));
+}
+
+static void
+action_bookmarked (GSimpleAction *action,
+                   GVariant      *state,
+                   gpointer       user_data)
+{
+    NautilusCommandBar *self = NAUTILUS_COMMAND_BAR (user_data);
+    NautilusApplication *app = NAUTILUS_APPLICATION (g_application_get_default ());
+    NautilusBookmarkList *bookmarks = nautilus_application_get_bookmarks (app);
+    g_autoptr (GFile) target = get_bookmark_target (self);
+
+    if (target == NULL)
+    {
+        return;
+    }
+
+    /* The state is updated by update_bookmark_actions() once the bookmark
+     * list changes. */
+    if (g_variant_get_boolean (state))
+    {
+        nautilus_bookmark_list_add (bookmarks, target, -1);
+    }
+    else
+    {
+        nautilus_bookmark_list_remove (bookmarks, target);
+    }
+}
+
+static const GActionEntry command_bar_entries[] =
+{
+    { .name = "bookmarked", .state = "false", .change_state = action_bookmarked },
+};
 
 static void
 update_new_menu (NautilusCommandBar *self)
@@ -105,6 +193,8 @@ adjust_to_location (NautilusCommandBar *self)
     gboolean has_view_options = location != NULL &&
                                 !nautilus_is_root_for_scheme (location, SCHEME_NETWORK_VIEW);
 
+    update_bookmark_actions (self);
+
     gtk_widget_set_sensitive (self->sort_button, has_view_options);
     gtk_widget_set_sensitive (self->view_button, has_view_options);
 
@@ -154,6 +244,8 @@ nautilus_command_bar_set_window_slot (NautilusCommandBar *self,
                                   G_CALLBACK (update_new_menu), self);
         g_signal_connect_swapped (self->window_slot, "notify::icon-name",
                                   G_CALLBACK (update_view_button_icon), self);
+        g_signal_connect_swapped (self->window_slot, "notify::selection",
+                                  G_CALLBACK (update_bookmark_actions), self);
     }
 
     adjust_to_location (self);
@@ -227,6 +319,7 @@ nautilus_command_bar_finalize (GObject *obj)
     NautilusCommandBar *self = NAUTILUS_COMMAND_BAR (obj);
 
     g_clear_object (&self->sort_section);
+    g_clear_object (&self->action_group);
 
     G_OBJECT_CLASS (nautilus_command_bar_parent_class)->finalize (obj);
 }
@@ -254,6 +347,7 @@ nautilus_command_bar_class_init (NautilusCommandBarClass *klass)
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, new_button);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, sort_button);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, view_button);
+    gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, bookmark_button);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, view_button_content);
     gtk_widget_class_bind_template_child (widget_class, NautilusCommandBar, view_mode_section);
 }
@@ -262,6 +356,20 @@ static void
 nautilus_command_bar_init (NautilusCommandBar *self)
 {
     gtk_widget_init_template (GTK_WIDGET (self));
+
+    self->action_group = g_simple_action_group_new ();
+    g_action_map_add_action_entries (G_ACTION_MAP (self->action_group),
+                                     command_bar_entries,
+                                     G_N_ELEMENTS (command_bar_entries),
+                                     self);
+    gtk_widget_insert_action_group (GTK_WIDGET (self),
+                                    "command-bar",
+                                    G_ACTION_GROUP (self->action_group));
+
+    NautilusApplication *app = NAUTILUS_APPLICATION (g_application_get_default ());
+    g_signal_connect_object (nautilus_application_get_bookmarks (app), "changed",
+                             G_CALLBACK (update_bookmark_actions), self,
+                             G_CONNECT_SWAPPED);
 
     g_autoptr (GtkBuilder) builder =
         gtk_builder_new_from_resource ("/org/gnome/nautilus/menu/nautilus-toolbar-view-menu.ui");
@@ -280,4 +388,5 @@ nautilus_command_bar_init (NautilusCommandBar *self)
     g_menu_append_item (self->view_mode_section, list_item);
 
     update_new_menu (self);
+    update_bookmark_actions (self);
 }

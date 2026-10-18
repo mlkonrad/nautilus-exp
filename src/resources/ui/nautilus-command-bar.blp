@@ -58,20 +58,6 @@ menu more_menu {
 
   section {
     item {
-      label: _("Add to _Bookmarks");
-      action: "slot.bookmark-current-directory";
-      hidden-when: "action-disabled";
-    }
-
-    item {
-      label: _("Remove from _Bookmarks");
-      action: "slot.unbookmark-current-directory";
-      hidden-when: "action-disabled";
-    }
-  }
-
-  section {
-    item {
       label: _("Open in Consol_e");
       action: "view.current-directory-console";
       hidden-when: "action-disabled";
@@ -245,6 +231,16 @@ template $NautilusCommandBar: Adw.Bin {
 
     Box {
       hexpand: true;
+    }
+
+    ToggleButton bookmark_button {
+      icon-name: "user-bookmarks-symbolic";
+      tooltip-text: _("Add to Bookmarks");
+      action-name: "command-bar.bookmarked";
+
+      styles [
+        "flat",
+      ]
     }
 
     ToggleButton {
