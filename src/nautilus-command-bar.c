@@ -132,9 +132,9 @@ action_bookmarked (GSimpleAction *action,
     }
 }
 
-/* Mirrors the rules used to enable the "view.star", "view.unstar",
- * "slot.star-current-directory" and "slot.unstar-current-directory" actions,
- * which do the actual work. */
+/* Mirrors the rules used to enable the "slot.star-current-directory" and
+ * "slot.unstar-current-directory" actions, and the star column for selected
+ * items. */
 static void
 update_star_action (NautilusCommandBar *self)
 {
@@ -213,9 +213,25 @@ action_starred (GSimpleAction *action,
                                     star ? "slot.star-current-directory" : "slot.unstar-current-directory",
                                     NULL);
     }
+    else if (star)
+    {
+        /* Not using "view.star" and "view.unstar", because the latter is only
+         * enabled in the Starred view. Undo is handled by the tag manager. */
+        nautilus_tag_manager_star_files (nautilus_tag_manager_get (),
+                                         G_OBJECT (self),
+                                         nautilus_window_slot_get_selection (self->window_slot),
+                                         nautilus_tag_manager_announce_starred_cb,
+                                         self,
+                                         NULL);
+    }
     else
     {
-        gtk_widget_activate_action (GTK_WIDGET (self), star ? "view.star" : "view.unstar", NULL);
+        nautilus_tag_manager_unstar_files (nautilus_tag_manager_get (),
+                                           G_OBJECT (self),
+                                           nautilus_window_slot_get_selection (self->window_slot),
+                                           nautilus_tag_manager_announce_unstarred_cb,
+                                           self,
+                                           NULL);
     }
 }
 
